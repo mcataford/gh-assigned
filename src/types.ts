@@ -31,4 +31,11 @@ export interface State {
     visible: number[]
     query: string
 }
+
+export type QueryType = 'issues' | 'review-requests'
+
+export interface CliArgs {
+    queryType: QueryType
+}
+
 export type AssignedIssueByRepoMap = Map<string, Array<AssignedIssue>>
