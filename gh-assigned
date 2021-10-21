@@ -4,4 +4,5 @@
 # library deprecation warnings if they aren't contained in
 # node_modules. Since we are bundling, this would be noisy.
 
-node --no-deprecation dist/index.js $@
+EXTENSION_PATH=$(dirname $0)
+exec node --no-deprecation "$EXTENSION_PATH/dist/index.js" $@
