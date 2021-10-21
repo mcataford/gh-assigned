@@ -1,3 +1,7 @@
 #!/usr/bin/bash
 
+# Deprecations are silenced because node does not silence
+# library deprecation warnings if they aren't contained in
+# node_modules. Since we are bundling, this would be noisy.
+
 node --no-deprecation dist/index.js $@
