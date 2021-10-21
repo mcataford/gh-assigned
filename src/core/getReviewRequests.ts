@@ -34,11 +34,15 @@ function flattenAssignedIssueNode(
     }
 }
 
-export default async function getReviewRequests(): Promise<AssignedIssueByRepoMap> {
+export default async function getReviewRequests({
+    queryFilter,
+}: {
+    queryFilter?: string
+}): Promise<AssignedIssueByRepoMap> {
     const client = await getClient()
 
     const result = await client(`{
-     search(query: "is:open is:pr assignee:@me", type: ISSUE, first: 100) {
+     search(query: "is:open is:pr ${queryFilter}:@me", type: ISSUE, first: 100) {
         edges {
           node {
             ... on PullRequest {
