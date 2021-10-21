@@ -51,7 +51,7 @@ export default async function createPrompt({
     items,
 }: {
     items: AssignedIssueByRepoMap
-}): Promise<string> {
+}): Promise<void> {
     const lineInterface = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -81,7 +81,7 @@ export default async function createPrompt({
     return new Promise((resolve) => {
         const done = () => {
             lineInterface.close()
-            resolve(finalValue)
+            resolve()
         }
 
         process.stdin.on('keypress', async (input: any, event: any) => {
@@ -89,8 +89,11 @@ export default async function createPrompt({
             const currentSelection = state.lookup.get(state.selected)
 
             if (event.name === 'return' && currentSelection) {
-                if (state.query === 'exit') done()
-                await open(currentSelection.url)
+                if (state.query === 'exit') {
+                    done()
+                } else {
+                    await open(currentSelection.url)
+                }
             } else if (event.name === 'down') {
                 state.selected =
                     state.visible[

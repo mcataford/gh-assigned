@@ -3,6 +3,7 @@
   "private": true,
   "packageManager": "yarn@3.0.2",
   "scripts": {
+    "run-local": "yarn build && ./gh-assigned",
     "build": "ncc build src/index.ts -o dist",
     "lint": "eslint ./src"
   },
