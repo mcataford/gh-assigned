@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+node --no-deprecation dist/index.js
