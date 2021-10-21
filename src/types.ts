@@ -32,8 +32,10 @@ export interface State {
     query: string
 }
 
+export type QueryType = 'issues' | 'review-requests'
+
 export interface CliArgs {
-    queryType: 'issues' | 'review-requests'
+    queryType: QueryType
 }
 
 export type AssignedIssueByRepoMap = Map<string, Array<AssignedIssue>>

@@ -1,5 +1,5 @@
 import ghAssigned from './ghAssigned'
-import type { CliArgs } from './types'
+import type { CliArgs, QueryType } from './types'
 
 function parseCli(): CliArgs {
     const cliArgs = process.argv.slice(2)
@@ -11,7 +11,7 @@ function parseCli(): CliArgs {
             'Invalid item type. Must be one of issues, review-requests',
         )
 
-    return { queryType: queryType as 'issues' | 'review-requests' }
+    return { queryType: queryType as QueryType }
 }
 
 ghAssigned({ cli: parseCli() }).catch((e) => {

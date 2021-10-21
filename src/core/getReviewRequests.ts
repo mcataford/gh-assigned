@@ -34,11 +34,9 @@ function flattenAssignedIssueNode(
     }
 }
 
-export default async function getReviewRequests({
-    queryFilter,
-}: {
-    queryFilter?: string
-}): Promise<AssignedIssueByRepoMap> {
+export default async function getReviewRequests(
+    queryFilter: string,
+): Promise<AssignedIssueByRepoMap> {
     const client = await getClient()
 
     const result = await client(`{
