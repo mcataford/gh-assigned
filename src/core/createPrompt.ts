@@ -3,7 +3,7 @@ import readline from 'readline'
 import chalk from 'chalk'
 import open from 'open'
 
-import type { AssignedIssue, AssignedIssueByRepoMap, State } from './types'
+import type { AssignedIssue, AssignedIssueByRepoMap, State } from '../types'
 
 function render(
     lineInterface: any,
