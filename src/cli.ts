@@ -50,7 +50,7 @@ function render(
 export default async function createPrompt({
     items,
 }: {
-    items: any
+    items: AssignedIssueByRepoMap
 }): Promise<string> {
     const lineInterface = readline.createInterface({
         input: process.stdin,
@@ -73,7 +73,7 @@ export default async function createPrompt({
         selected: defaultSelection,
         lookup: lookup,
         visible: [...lookup.keys()],
-        query: ''
+        query: '',
     }
 
     render(lineInterface, items, state)
@@ -87,10 +87,9 @@ export default async function createPrompt({
         process.stdin.on('keypress', async (input: any, event: any) => {
             const cursorPosition = lineInterface.getCursorPos()
             const currentSelection = state.lookup.get(state.selected)
-            
+
             if (event.name === 'return' && currentSelection) {
-                if (state.query === 'exit')
-                    process.exit(0)
+                if (state.query === 'exit') process.exit(0)
                 await open(currentSelection.url)
             } else if (event.name === 'down') {
                 state.selected =
@@ -107,7 +106,10 @@ export default async function createPrompt({
             } else if (event.name.match(/^\w$/)) {
                 state.query += event.name
             } else if (event.name === 'backspace') {
-                state.query = state.query.substring(0, Math.max(state.query.length - 1, 0))
+                state.query = state.query.substring(
+                    0,
+                    Math.max(state.query.length - 1, 0),
+                )
             }
 
             readline.moveCursor(
