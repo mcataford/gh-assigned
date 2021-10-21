@@ -61,7 +61,7 @@ export default async function createPrompt({
     const lookup = new Map<number, AssignedIssue>()
     let defaultSelection = 0
 
-    for (const [_, issues] of items.entries()) {
+    for (const [, issues] of items.entries()) {
         for (const issue of issues) {
             if (!defaultSelection) defaultSelection = issue.number
 
@@ -79,7 +79,7 @@ export default async function createPrompt({
     render(lineInterface, items, state)
 
     return new Promise((resolve) => {
-        const done = (finalValue: string) => {
+        const done = () => {
             lineInterface.close()
             resolve(finalValue)
         }
@@ -89,7 +89,7 @@ export default async function createPrompt({
             const currentSelection = state.lookup.get(state.selected)
 
             if (event.name === 'return' && currentSelection) {
-                if (state.query === 'exit') process.exit(0)
+                if (state.query === 'exit') done()
                 await open(currentSelection.url)
             } else if (event.name === 'down') {
                 state.selected =

@@ -3,6 +3,7 @@ import type {
     AssignedIssueByRepoMap,
     AssignedIssueNode,
 } from '../types'
+
 import getClient from './getClient'
 
 function flattenAssignedIssueNode(
