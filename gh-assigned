@@ -1,8 +1,86 @@
-#!/usr/bin/bash
+#!/usr/bin/zsh
 
-# Deprecations are silenced because node does not silence
-# library deprecation warnings if they aren't contained in
-# node_modules. Since we are bundling, this would be noisy.
+set -e
 
-EXTENSION_PATH=$(dirname $0)
-exec node --no-deprecation "$EXTENSION_PATH/dist/index.js" $@
+#
+# Shortcut to view PR number $2 from repository $1 where
+# $1 is of the format owner/repo_name in the browser.
+#
+function view() {
+    gh pr --repo $1 view $2 -w
+}
+
+#
+# Queries Github's GraphQL API to get information on issues associated
+# with the logged in user. $1 is the header to display above the results
+# and $2 is the filter to use (i.e. assignee, review-requested).
+#
+function _getIssueData() {
+    OUTPUT_TEMPLATE='{{ range .data.search.edges }}{{ printf "(%s/%s)" .node.repository.owner.login
+    .node.repository.name | color "blue" }}{{ printf " #%-.0f\n" .node.number }}{{ printf "%s - %s"
+    .node.author.login .node.title }}{{ printf " (Updated %s)\n\n" (timeago .node.updatedAt) | color "green" }}{{
+end }}'
+    QUERY_STRING="{
+         search(query: \"is:open is:pr $2:@me\", type: ISSUE, first: 100) {
+            edges {
+              node {
+                ... on PullRequest {
+                  number
+                  title
+                  author {
+                    login
+                  }
+                  publishedAt
+                  reviewDecision
+                  updatedAt
+                  createdAt
+                  url
+                  repository {
+                      name
+                      owner {
+                        login
+                        }
+                  }
+                }
+              }
+            }
+        }
+    }"
+    
+    QUERY_RESULT=$(gh api graphql -f query="$QUERY_STRING" -t "$OUTPUT_TEMPLATE")
+
+    echo $1
+    echo $QUERY_RESULT
+}
+
+COMMAND=$1
+
+#
+# gh assigned ls
+#
+# Displays issues assigned to the current user as well as those
+# that have a review request for the user.
+#
+#
+# gh assigned open repo_owner/repo_name issue_number
+#
+# Opens the given issue from the chosen repository in the
+# browser.
+#
+
+if [[ $COMMAND == 'ls' ]]; then
+    _getIssueData "👀 Review requests" "review-requested"
+    _getIssueData "👉 Assigned to me" "assignee"
+elif [[ $COMMAND == 'open' ]]; then
+    view $2 $3
+else
+    echo "\
+    \e[1mgh assigned - a quick utility to keep up with review requests.\e[0m
+
+    USAGE:
+
+    \e[1mgh assigned ls\e[0m
+        Lists all review requests and assigned issues for the current user across all repositories.
+    \e[1mgh assigned open <repository> <issue_number>\e[0m
+        Opens the given issue from the chosen repository in the browser."
+fi
