@@ -8,7 +8,18 @@
 
 Once installed, simply `gh assigned` to view your assigned issues!
 
+*Note*: the extension requires `zsh`.
+
 ## Usage
 
-`gh assigned issues` will display a dashboard of issues assigned to you;
-`gh assigned review-requests` will display a dashboard of PRs on which you or your team is a requested reviewer.
+From the help menu (available under `gh assigned`):
+```
+    gh assigned - a quick utility to keep up with review requests.
+
+    USAGE:
+
+    gh assigned ls
+        Lists all review requests and assigned issues for the current user across all repositories.
+    gh assigned open <repository> <issue_number>
+        Opens the given issue from the chosen repository in the browser.
+```
