@@ -2,6 +2,12 @@
 
 `gh-assigned` is a `gh` CLI extension that makes checking up on assigned issues without leaving the terminal easier.
 
+## Deprecation
+
+This project is now deprecated and, for all intents and purposes, abandoned. The initial intent behind fiddling with this
+was to find a way to manage reviews without needing to exit the terminal, something that
+[gh-dash](https://github.com/dlvhdr/gh-dash) does very well. As such, I recommend that folks just use/contribute to `gh-dash`.
+
 ## Installation
 
 `gh extension install mcataford/gh-assigned` will install the extension.
